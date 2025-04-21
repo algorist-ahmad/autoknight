@@ -1,0 +1,81 @@
+\e[1mAUTOKNIGHT\e[0m — Fleet Management Utility
+
+Welcome to Autoknight — a utility crafted to consolidate and simplify your vehicular data management. Inspired by Coinmaster’s financial oversight and Taskwarrior’s task-driven rigor, Autoknight offers a unified platform for recording, reviewing, and acting upon every facet of your fleet.
+
+Whether assembling precise tax documentation, tracking fuel and maintenance expenses, monitoring upcoming renewals, or auditing expired credentials, Autoknight minimizes friction by uniting all records under a single, coherent interface.
+
+Per Autoknight’s design, each vehicle’s data is organized into eight principal categories:
+
+VEHICLE PROPERTIES (8 Categories)
+1. \e[1mIdentification\e[0m  
+   VIN, ownership history, purchase cost and date  
+   (static reference data; entered once)
+
+2. \e[1mDocumentation\e[0m  
+   Registration, insurance, inspection certificates  
+   (expiry tracking; compliance monitoring)
+
+3. \e[1mMileage\e[0m  
+   Odometer readings with date–time stamps  
+   (journey logs; tax‑deductible travel)
+
+4. \e[1mFuelling\e[0m  
+   Fuel purchase records and fill‑up details  
+   (consumption metrics; cost‑per‑mile analysis)
+
+5. \e[1mMaintenance\e[0m  
+   Service entries, repair invoices, warranty notes  
+   (scheduled servicing; repair history)
+
+6. \e[1mSupplies\e[0m  
+   Parts, consumables, and inventory counts  
+   (stock levels; expense categorization)
+
+7. \e[1mTasks\e[0m  
+   Pending actions (e.g., “Renew registration”)  
+   (deadlines; status reminders)
+
+8. \e[1mJournal\e[0m  
+   Free‑form notes on performance, issues, or observations  
+   (usage insights; planning reference)
+
+COMMAND REFERENCE
+
+\e[1mCore Operations\e[0m  
+    list            List all vehicles in the fleet  
+    info [VIN]      Display full profile for the specified vehicle  
+    docs            Show expiration status for all documents  
+
+\e[1mData Entry\e[0m  
+    log km [miles]      Record a new odometer reading  
+    log fuel            Add a fuel transaction (volume, price, date)  
+    log serv            Enter maintenance or repair details  
+    log task            Create a vehicle‑specific task or reminder  
+    log supp            Record supply or parts usage  
+    log jrnl            Append a journal entry (notes, observations)  
+
+\e[1mReports\e[0m  
+    report [--tax-year YYYY]  
+                       Generate a financial summary covering fuel, maintenance,  
+                       supplies, and (future) depreciation details  
+    reminders           List upcoming document expirations and pending tasks  
+
+\e[1mAutomation\e[0m  
+    email               Dispatch reminder notifications via configured SMTP  
+    sync                (future) Synchronize fleet data with cloud repository  
+
+\e[1mMiscellaneous\e[0m  
+    help                Display this help message  
+    version             Print build and version information  
+
+NOTES
+1. This proof‑of‑concept demonstrates intended command structure only.  
+2. Financial calculations are illustrative; accuracy will improve with future updates.  
+3. Persistent storage and synchronization features are planned but not yet implemented.
+
+EXAMPLES
+    $ autoknight info ABC123  
+    $ autoknight log km 15430  
+    $ autoknight log fuel --volume 50.0 --price 1.32  
+    $ autoknight report --tax-year 2023  
+    $ autoknight reminders

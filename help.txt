@@ -1,0 +1,87 @@
+\e[1mAUTOKNIGHT\e[0m - Fleet management
+
+Welcome to Autoknight! Inspired by both Coinmaster (finance) and Taskwarrior (tasks). Similarly to the latter two, Autoknight is a manager for all things concerning vehicular data. Useful to speed up tax returns on March or to simply view a financial report or to view pending tasks, expired documents, etc.
+
+Per autoknight's definition, a vehicle has many properties which may be grouped in 8 categories:
+
+SYNOPSIS
+    autoknight [command] [arguments]
+
+DESCRIPTION
+    A future fleet management tool inspired by:
+    - Coinmaster (financial tracking)
+    - Taskwarrior (task management)
+    
+    Currently a proof-of-concept demonstrating intended functionality for vehicle data management.
+
+VEHICLE PROPERTIES (8 Categories)
+1. \e[1mIdentification\e[0m
+   - VIN, ownership history, purchase details
+   - Static reference data (entered once)
+
+2. \e[1mDocumentation\e[0m
+   - Registration, insurance, inspections
+   - Legal compliance tracking
+
+3. \e[1mMileage\e[0m
+   - Odometer readings with timestamps
+   - Tax-deductible travel tracking
+
+4. \e[1mFuelling\e[0m
+   - Fuel purchases and consumption
+   - Cost-per-mile calculations (future)
+
+5. \e[1mMaintenance\e[0m
+   - Service records and repair history
+   - Scheduled maintenance tracking
+
+6. \e[1mSupplies\e[0m
+   - Parts and consumables inventory
+   - Expense categorization
+
+7. \e[1mTasks\e[0m
+   - Pending actions (e.g., "Renew insurance")
+   - Deadline-driven reminders
+
+8. \e[1mJournal\e[0m
+   - Notes on usage patterns/issues
+   - Future planning reference
+
+COMMAND REFERENCE
+\e[1mCore Operations\e[0m
+    list        List all vehicles in fleet
+    info [VIN]  Show detailed vehicle profile
+    docs        Check document expiration status
+
+\e[1mData Entry\e[0m
+    log km [miles]   Record mileage
+    log fuel         Add fuel purchase
+    log serv         Log maintenance
+    log task         Add vehicle-specific task
+    log supp         Record supplies/parts
+    log jrnl         Add journal entry
+
+\e[1mReports\e[0m
+    fin|report       Generate financial summary:
+                     - Fuel/maintenance/supply costs
+                     - Depreciation (future)
+                     - Tax-deductible amounts
+    cal|reminders    Show upcoming deadlines
+
+\e[1mAutomation\e[0m
+    email            Send reminder notifications
+    sync             Future cloud integration
+
+\e[1mMiscellaneous\e[0m
+    help             Show this message
+    version          Display build info
+
+NOTES
+1. Current implementation only demonstrates command structure.
+2. All financial calculations are placeholder logic.
+3. Data persistence not yet implemented.
+
+EXAMPLES
+    $ autoknight info ABC123
+    $ autoknight log km 15430
+    $ autoknight report --tax-year 2023

@@ -1,0 +1,102 @@
+#!/bin/bash
+
+VERSION='0.0.0'
+
+# Entry point to my program. Loads config.yml then routes to the appropriate subprogram as instrcuted
+# from the first argument.
+
+# STATUS: DRAFT
+# TESTS:  N/A
+
+ROOT_DIR=$( dirname "$(dirname "$(readlink -f "$0")")" )
+
+source "$ROOT_DIR/src/dependency/manager.sh"
+
+CONFIGFILE="$ROOT_DIR/config.yml"
+HELPFILE="$ROOT_DIR/help.txt"
+ARGS="$@"
+
+main() {
+  # check_dependencies_warn
+  # load_config_file
+  dispatch $ARGS   # notice: no quotes, something changed here!
+}
+
+# load config from config.yml
+load_config_file() {
+  DEFAULT_FN=$(config_get 'default_command')
+}
+
+dispatch() {
+  case "$1" in
+    # standard
+    help | --help | -h)     shift ; show_help    ;;
+    ver* | --version | -v)  shift ; show_version ;;
+
+    list) echo "list vehicles" ;;
+    info) echo "auto info hrv" ;;
+    docs) echo "query documents status" ;;
+    log) echo "auto log [km|fuel|serv|task|supp|jrnl]" ;;
+    service | rep | maintenance) echo "maintenance records" ;;
+    cal  | rem  | reminders) echo "reminders" ;;
+    email) echo "email reminders to me" ;;
+    task | todo ) echo "tasks: $@" ;;
+    fin | report) echo "generate financial report; sum of the cost of fuel, maintenance, supplies, docs, and the cost of the vehicle itself if financed " ;;
+    
+    # catch-all
+    '') show_help ;;
+    * ) show_help ;;
+    
+  esac
+}
+
+config_get() { echo $(yq ".$*" "$CONFIGFILE") ; }
+
+do_account() { "$CMD_ACCOUNT" "$@" ; }
+do_transac() { "$CMD_TRANSAC" "$@" ; }
+do_plan()    { "$CMD_PLAN"    "$@" ; }
+
+do_bill()    { "$CMD_BILL"    "$@" ; } # DEPRECATED
+do_list()    { "$CMD_LIST"    "$@" ; } # DEPRECATED
+do_task()    { "$CMD_TASK"    "$@" ; } # DEPRECATED
+do_insert()  { "$CMD_INSERT"  "$@" ; } # DEPRECATED
+do_balance() { "$CMD_BALANCE" "$@" ; } # DEPRECATED
+
+# The original purpose of Coinmaster was simply to track bills deadlines and view account balances.
+# This summary adheres to this original purpose.
+do_summary() {
+  echo -e "Upcoming bills:"
+  do_transac +bill           # view upcoming bills
+  do_account balance --total # view total balance
+  echo -e "\nDo \`coin acc\` to check balance"
+}
+
+show_help() { echo -e "$(cat $HELPFILE)" | less ; }
+show_version() { echo -e "coin $VERSION" ; }
+
+# handle_unknown_args() {
+#   >&2 echo "PASSING TO COMMAND: list.sh"
+#   do_list $ARGS
+# }
+
+# txn, bill, plan, contract
+create_new_object() {
+
+  if command -v gum
+    then object_to_create=$(gum choose --header="New what?" --cursor="> new " --label-delimiter=":" "${COIN_OBJECTS[@]}")
+    else cmd_not_found_exception
+  fi
+
+  case "$object_to_create" in
+    txn) do_transac add  "$@" ;;
+    # bill) do_transac add  "$@"  ;;
+    plan) echo "Not implemented, create an issue with \`gh issue create\`"  ;;
+    contract) echo "Not implemented, create an issue with \`gh issue create\`"  ;;
+  esac 
+}
+
+cmd_not_found_exception() {
+  >&2 echo -e "Command \`gum\` required, do: sudo pacman -S gum"
+}
+
+main
