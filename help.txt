@@ -1,8 +1,8 @@
 \e[1mAUTOKNIGHT\e[0m - Fleet management
 
-Welcome to Autoknight! Inspired by both Coinmaster (finance) and Taskwarrior (tasks). Similarly to the latter two, Autoknight is a manager for all things concerning vehicular data. Useful to speed up tax returns on March or to simply view a financial report or to view pending tasks, expired documents, etc.
-
-Per autoknight's definition, a vehicle has many properties which may be grouped in 8 categories:
+Welcome to Autoknight! Inspired by both Coinmaster (finance) and Taskwarrior (tasks). Similarly to the latter two, Autoknight is
+a manager for all things concerning vehicular data. Useful to speed up tax returns on March or to simply view a financial report
+or to view pending tasks, expired documents, etc.
 
 SYNOPSIS
     autoknight [command] [arguments]
@@ -13,6 +13,8 @@ DESCRIPTION
     - Taskwarrior (task management)
     
     Currently a proof-of-concept demonstrating intended functionality for vehicle data management.
+
+Per autoknight's definition, a vehicle has many properties which may be grouped in 8 categories:
 
 VEHICLE PROPERTIES (8 Categories)
 1. \e[1mIdentification\e[0m
