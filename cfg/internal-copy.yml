@@ -1,0 +1,10 @@
+path:
+  root: /home/ahmad/src/autoknight
+  task_manager: src/task-manager/main.sh
+  config:
+    internal: cfg/internal.yml
+    user: cfg/user.yml
+  doc:
+    help:
+      auto: doc/help/auto.txt
+      task: doc/help/task.txt

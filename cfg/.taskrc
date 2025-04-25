@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Taskwarrior program configuration file MODIFIED for Coinmaster
+# Taskwarrior program configuration file MODIFIED for Autoknight
 
 # IMPORTED FILES ***********************************************************************************
 
@@ -12,7 +12,7 @@ include dark-256.theme
     editor=$EDITOR
   # DO NOT PROPAGATE CHANGES TO OTHER CHILDREN
     recurrence.confirmation=no
-    recurrence.limit=2
+    recurrence.limit=1
   # make search case INsensitive
     search.case.sensitive=0
   # verbosity
@@ -22,7 +22,7 @@ include dark-256.theme
   # run reports in read only to avoid useless commits and merging conflicts
     # gc=0
   # default command following `task`
-    default.command=next
+    default.command=full
   # color settings
     rule.precedence.color=overdue,scheduled,due.today,due,uda.,deleted,completed,active,keyword.,tag.,project.,blocked,blocking,recurring,tagged
 
@@ -41,25 +41,13 @@ include dark-256.theme
   color.uda.priority.L=color242
   color.uda.priority.T=color240
 
-  # source **************************************
-  uda.source.label=source
-  uda.source.type=string
+  # VIN **************************************
+  uda.vin.label=VIN
+  uda.vin.type=string
 
-  # payee **************************************
-  uda.payee.label=payee
-  uda.payee.type=string
-
-  # amount **************************************
-  uda.amount.label=amount
-  uda.amount.type=numeric
-
-  # paid
-  uda.paid.label=paid
-  uda.paid.type=string
-  uda.paid.values=yes
-  uda.paid.default=
-  uda.paid.indicator=✅
-  color.uda.paid.yes=gray10
+  # odometer **************************************
+  uda.odometer.label=odometer
+  uda.odometer.type=numeric
 
 # URGENCY TUNING ***********************************************************************************
 
@@ -75,15 +63,24 @@ include dark-256.theme
 
 # REPORTS ******************************************************************************************
 
-  # TODO: 4 degrees of details in order: minimal, ls, list, long  
+  # TODO: 4 degrees of details in order: minimal, ls, list, long
+
+  # minimally filtered table ordered by deadline
+    report.full.description=Minimally filtered table ordered by deadline, odometer, and priority
+    
+    report.full.columns=id,vin,status.short,description,due.relative,odometer,priority,recur,uuid.short,tags
+    report.full.labels=ID,VIN,status,desc,due,odo,P,recur,uuid,tags
+    report.full.filter=
+    report.full.sort=due+,odometer+,priority-
+  # /full
 
   # next
-  report.next.description=All unpaid bills or paid bills up to 2 weeks ahead, sorted by urgency
-  #
-  report.next.columns=id,paid.indicator,status,description.truncated_count,amount,due.relative,source,payee,priority,recur,uuid.short,tags
-  report.next.labels=ID,✅,status,desc,💲,due,from,to,P,recur,uuid,tags
-  report.next.filter=( due.after:now-2wk due.before:now+2wk -TEMPLATE -WAITING ) or ( due.none: )
-  report.next.sort=urgency-,due+
+  # report.next.description=All unpaid bills or paid bills up to 2 weeks ahead, sorted by urgency
+  # #
+  # report.next.columns=id,paid.indicator,status,description.truncated_count,amount,due.relative,source,payee,priority,recur,uuid.short,tags
+  # report.next.labels=ID,✅,status,desc,💲,due,from,to,P,recur,uuid,tags
+  # report.next.filter=( due.after:now-2wk due.before:now+2wk -TEMPLATE -WAITING ) or ( due.none: )
+  # report.next.sort=urgency-,due+
   # /next
 
   # reveal uuid
@@ -92,22 +89,6 @@ include dark-256.theme
   report.uuid.columns=id,uuid,description,status.short
   report.uuid.labels=id,uuid,description,st
   report.uuid.sort=id+
-
-  # Tasks to do today
-
-  # report.todo.description=Tasks to be fulfilled today
-  # report.todo.columns=id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description,urgency
-  # report.todo.labels=ID,Active,Age,Deps,P,Project,Tag,Recur,S,Due,Until,Description,Urg
-  # report.todo.context=1
-  # report.todo.filter=+PENDING -WAITING ( +ACTIVE or +TOMORROW or +YESTERDAY or +next or +todo or +TODO or scheduled:today or due.before:7days) limit:page
-  # report.todo.sort=urgency-
-
-  # minimal report for jrnl
-
-  # report.jrnl.description=Minimal report for my journal
-  # report.jrnl.columns=uuid.short,description
-  # report.jrnl.labels=id,desc
-  # report.jrnl.sort=urgency+
 
   # deleted tasks
 
@@ -127,41 +108,4 @@ include dark-256.theme
 
   # all (enhanced) ***********************************************************
   
-    report.all.columns=id,status.short,uuid.short,start.active,entry.age,end.age,depends.indicator,priority,project.parent,tags.count,recur.indicator,wait.remaining,scheduled.remaining,due.countdown,until.remaining,description
-
-# Guidance *****************************************************************************************
-
-# 
-#        color.uda.X=on green
-#               Colors any task that has the user defined attribute X.
-# 
-#        color.uda.X.VALUE=on green
-#               Colors any task that has the user defined attribute X set to VALUE.
-# 
-#        color.uda.X.none=on green
-#               Colors any task that does not have the user defined attribute X.
-       # urgency.uda.<name>.coefficient=...
-       #        Presence/absence of UDA data.
-       # urgency.uda.<name>.<value>.coefficient=...
-       #        Specific value of UDA data.
- # uda.<name>.type=string|numeric|date|duration
- #               Defines a UDA called '<name>', of the specified type.
- # 
- #        uda.<name>.label=<column heading>
- #               Provides a default report label for the UDA called '<name>'.
- # 
- #        uda.<name>.values=A,B,C
- #               For  type  'string'  UDAs  only, this provides a comma-separated list of acceptable
- #               values. In this example, the '<name>' UDA may only contain values 'A', 'B', or 'C',
- #               but may also contain no value.
- # 
- #               Note  that  the  order  of  the value is important, and denotes the sort order from
- #               highest ('A') to lowest ('C').
- # 
- #               Note that a blank value is permitted.
- # 
- #        uda.<name>.default=...
- #               Provides a default value for the UDA called '<name>'.
-
-# MISC *********************************************************************************
-news.version=3.3.0
+  report.all.columns=id,status.short,uuid.short,start.active,entry.age,end.age,depends.indicator,priority,project.parent,tags.count,recur.indicator,wait.remaining,scheduled.remaining,due.countdown,until.remaining,description
