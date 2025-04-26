@@ -1,5 +1,7 @@
 #!/bin/bash
 
+if [[ "$1" == 'debug' ]]; then shift ; set -x ; fi
+
 VERSION='0.0.0'
 
 # Entry point to my program. Loads config.yml then routes to the appropriate subprogram as instrcuted
@@ -14,7 +16,6 @@ ARGS=$@
 set -o pipefail
 set -u # example: /home/ahmad/bin/auto: line 23: ROOT: unbound variable, holy shit this is amazing
 set -e # sideffects maybe
-# set -x # ! DEBUG MODE
 
 export ROOT # don't fail me, the config loader relies on you!
 source "$ROOT/src/config-loader.sh"
@@ -34,7 +35,7 @@ dispatch() {
     -h | help | --help )     shift ; show_help    ;;
     -v | ver* | --version)   shift ; show_version ;;
 
-    # in progress
+    # special
     -t | task | todo ) shift ; execute_task "$@" ;;
 
     # not implemented

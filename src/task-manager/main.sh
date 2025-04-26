@@ -39,7 +39,6 @@ load_config() {
 }
 
 dispatch() {
-  set -x
   if [[ -z "$@" ]]; then
     special_cmd='null'
   else
@@ -47,8 +46,9 @@ dispatch() {
   fi
 
   case "$special_cmd" in
-    help | --help | -h)   show_help ;;          # tested
-    add | new)            insert_task "$@";;    # no issue assigned
+    -h | help | --help)   show_help ;;          # tested
+    -a | add | new)       insert_task "$@";;    # no issue assigned
+    -x | export)          export_task "$@";;
     *) execute_task "$@" ;;                     # ISSUE ?
   esac
 }
@@ -64,6 +64,12 @@ show_help() {
   fi
 }
 
+# exports all non-template tasks
+export_task() {
+  task -TEMPLATE export > /tmp/auto.export.json
+  tag_txn /tmp/auto.export.json 'AUTO'
+}
+
 insert_task() {
   set -x
   shift; # remove 'add keyword'
@@ -75,6 +81,22 @@ insert_task() {
 
 execute_task() {
   task $@
+}
+
+# add special tag COIN when exporting
+tag_txn() {
+  set -u
+  jsonfile="$1"
+  newtag="$2"
+  jq --arg newtag "$newtag" 'map(.tags |= . + [$newtag])' "$jsonfile"
+}
+
+# remove special tag COIN when importing
+untag_txn() {
+  set -u
+  jsonfile="$1"
+  tag="$2"
+  jq --arg tag "$tag" 'map(.tags |= . - [$tag])' "$jsonfile"
 }
 
 main $@
