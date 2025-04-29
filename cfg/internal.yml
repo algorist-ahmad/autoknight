@@ -9,5 +9,5 @@ doc:
     task: doc/help/task.txt
 task:
   manager: src/task-manager/main.sh
-  data: /home/ahmad/nexus/auto
+  data: /home/ahmad/collections/auto
   rc: cfg/.taskrc
