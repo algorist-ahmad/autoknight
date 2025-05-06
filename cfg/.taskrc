@@ -70,7 +70,7 @@ include dark-256.theme
     
     report.full.columns=id,vin,status.short,description,due.relative,odometer,priority,recur,uuid.short,tags
     report.full.labels=ID,VIN,status,desc,due,odo,P,recur,uuid,tags
-    report.full.filter=
+    report.full.filter=-TEMPLATE
     report.full.sort=due+,odometer+,priority-
   # /full
 
