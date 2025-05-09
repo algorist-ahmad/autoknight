@@ -7,7 +7,11 @@ doc:
   help:
     auto: doc/help/auto.txt
     task: doc/help/task.txt
+data:
+  service: /home/ahmad/collections/auto/fleet/3CZRZ2H52PM100370/service_log.csv
 task:
   manager: src/task-manager/main.sh
   data: /home/ahmad/collections/auto
   rc: cfg/.taskrc
+view:
+  manager: src/logs-manager/main.sh

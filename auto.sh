@@ -29,14 +29,16 @@ main() {
 }
 
 dispatch() {
-  [[ -z "$ARGS" ]] && show_help
+  [[ -z "$ARGS" ]] && show_quick_reference
   case "$1" in
     # standard
-    -h | help | --help )     shift ; show_help    ;;
+    -h | h | help | --help )     shift ; show_help    ;;
     -v | ver* | --version)   shift ; show_version ;;
 
     # special
-    -t | task | todo ) shift ; execute_task "$@" ;;
+    -r | R | ref) show_quick_reference ;;
+    -t | t | task | todo ) shift ; execute_task "$@" ;;
+    -V | v | view )        shift ; execute_view "$@" ;;
 
     # not implemented
     list | ls ) echo -e "Vehicles:\n- Elantra\n- HR-V\n\nadd vin here and other relevant info" ;;
@@ -55,6 +57,18 @@ dispatch() {
   esac
 }
 
+show_quick_reference() {
+  echo -e "
+  \e[1mCommon commands\e[0m:
+
+  R  --> see command \e[1mR\e[0meferece
+  h  --> show long \e[1mh\e[0melp
+  t  --> manage \e[1mt\e[0masks
+  v  --> \e[1mv\e[0miew spreadsheet (values: 'km', 'fuel', 'service')
+  "
+  exit 0
+}
+
 show_help() {
   help_txt=$(_get_file doc.help.auto)
   if ! [[ -f "$help_txt" ]]; then
@@ -69,6 +83,7 @@ show_help() {
 show_version() { echo -e "AutoKnight $VERSION" ; }
 
 execute_task() { bash "$(_get_file task.manager)" "$@" ; }
+execute_view() { bash "$(_get_file view.manager)" "$@" ; }
 
 execute_list() { exit 77; }
 execute_select() { exit 77; }
